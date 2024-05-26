@@ -25,15 +25,15 @@ export default {
       groceries: [
         // Sample user data, replace with your actual user data
         {
-          name: 'Lasagna',
+          name: 'Lemon',
           price: '2',
-          type: '120 min',
-          unit_symbol:'mL'
+          type: 'fruit',
+          unit_symbol:'kg'
         },
         {
-          name: 'Bolognese',
+          name: 'Beef',
           price: '4',
-          type: '30 min',
+          type: 'meat',
           unit_symbol:' kg'
         },
       ]
