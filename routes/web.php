@@ -11,4 +11,6 @@ Route::get('/{vue_capture?}', function () {
     return view('welcome');
 })->where('vue_capture', '[\/\w\.-]*');
 
-Route::get('/users', [UserController::class, 'UserMethod']);
+Route::get('/users', [UserController::class, 'GetAll']);
+
+Route::get('/users/{user_id}', [UserController::class, 'GetOne']);

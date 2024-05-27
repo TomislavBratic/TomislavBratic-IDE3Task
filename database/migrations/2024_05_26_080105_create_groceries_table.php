@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('price', 9, 3);
             $table->string('type');
             $table->string('unit_symbol');
+            $table->timestamps();
         });
     }
 

@@ -14,13 +14,11 @@ return new class extends Migration
     {
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('created_at')->default(Carbon::now());
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('portion');
             $table->text('preparation')->nullable();
             $table->integer('cooking_time')->unsigned()->nullable();
             $table->timestamps();
-
 
         });
     }

@@ -4,13 +4,13 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/users">User</a>
+        <a class="nav-link" href="/users">Users</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/recipes">Recipe</a>
+        <a class="nav-link" href="/recipes">Recipes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/groceries">Grocery</a>
+        <a class="nav-link" href="/groceries">Groceries</a>
       </li>
     </ul>
 

@@ -22,6 +22,26 @@ export default {
   components: {
     AddUser,
     UserCard
+  },
+
+  data() {
+    return {
+      users: []
+    };
+  },
+
+  created() {
+    this.fetchUsers();
+  },
+  methods: {
+    async fetchUsers() {
+      try {
+        const response = await axios.get('http://localhost/api/public/users');
+        this.users = response.data;
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    }
   }
 };
 
