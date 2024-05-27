@@ -80,4 +80,11 @@ class GroceryController extends Controller
         $grocery->update($validated);
         return  Response::json('grocery updated successfully!', 200);
     }
+
+    public function CreateGrocery(Request $request){
+        $data=$request->all();
+        Grocery::create($data);
+        return Response::json(200);
+          
+    }
 }

@@ -87,4 +87,11 @@ class UserController extends Controller
         $user->update($validated);
         return  Response::json('User updated successfully!', 200);
     }
+    
+    public function CreateUser(Request $request){
+        $data=$request->all();
+        User::create($data);
+        return Response::json(200);
+          
+    }
 }

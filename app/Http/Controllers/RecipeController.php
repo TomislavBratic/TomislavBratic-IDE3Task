@@ -118,4 +118,11 @@ class RecipeController extends Controller
         $recipe->update($validated);
         return  Response::json('Recipe updated successfully!', 200);
     }
+
+    public function CreateRecipe(Request $request){
+        $data=$request->all();
+        Recipe::create($data);
+        return Response::json(200);
+          
+    }
 }
