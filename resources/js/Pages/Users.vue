@@ -16,11 +16,13 @@
 <script>
 import AddUser from '../components/User/AddUser.vue';
 import UserCard from '../components/User/UserCard.vue';
+import UserDetails from '../components/User/UserDetails.vue';
 
 export default {
   name: 'Users.vue',
   components: {
     AddUser,
+    UserDetails,
     UserCard
   },
 

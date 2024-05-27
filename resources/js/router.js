@@ -17,6 +17,20 @@ const routes = [
         path: "/groceries",
         component: () => import("./Pages/Groceries.vue"),
     },
+    {
+        path: '/user/:id',
+        name: 'UserDetails',
+        component: () => import("./components/User/UserDetails.vue"),
+        props: true
+      },
+
+      {
+        path: '/recipe/:id',
+        name: 'RecipeDetails',
+        component: () => import("./components/Recipe/RecipeDetails.vue"),
+        props: true
+      },
+    
 ];
 
 export default createRouter({

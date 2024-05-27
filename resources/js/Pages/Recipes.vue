@@ -16,11 +16,13 @@
 <script>
 import AddRecipe from '../components/Recipe/AddRecipe.vue';
 import UserCard from '../components/Recipe/RecipeCard.vue';
+import RecipeDetails from '../components/Recipe/RecipeDetails.vue';
 
 export default {
  name: 'Users.vue',
  components: {
     AddRecipe,
+    RecipeDetails,
    UserCard
  }
 };

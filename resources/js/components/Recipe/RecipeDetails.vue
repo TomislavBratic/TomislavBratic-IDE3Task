@@ -1,43 +1,19 @@
 <template>
-   <div>
-    <h1>Recipe Table with Search</h1>
-    <!-- Search Inputs -->
-    <div class="row mb-3">
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Search by name" v-model="searchId">
+    <!-- Right Side with User Cards -->
+      <div class="recipe-card" v-for="(recipe, index) in recipes" :key="index">
+        <div class="card-body">
+          <h5 class="card-title">{{ recipe.name}}</h5>
+          <p class="card-text"><strong>Portion:</strong> {{ recipe.portion }}</p>
+          <p class="card-text"><strong>Time to cook:</strong> {{ recipe.timetocook }}</p>
+          <p class="card-text"><strong>Preparation:</strong> {{ recipe.preparation }}</p>
+         
+          <div class="button-group">
+            <button class="btn btn-primary" @click="editUser(index)">Edit</button>
+            <button class="btn btn-danger" @click="deleteUser(index)">Delete</button>
+            
+          </div>
         </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Search by date" v-model="searchName">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Search by average rating" v-model="searchId">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Search by no. of comments" v-model="searchName">
-        </div>
-     </div>
-     </div>
-
-    <div>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Portion</th>
-            <th scope="col">Time to Cook</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="recipe in recipes" :key="recipe.id" @click="goToRecipeDetails(recipe.id)">
-            <th scope="row">{{ recipe.id }}</th>
-            <td>{{ recipe.name }}</td>
-            <td>{{ recipe.portion }}</td>
-            <td>{{ recipe.timetocook }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      </div>
 </template>
 
 <script>
@@ -47,15 +23,15 @@ export default {
   data() {
     return {
       recipes: [
-        // Sample recipe data, replace with your actual recipe data
-        { id:'1',
+        // Sample user data, replace with your actual user data
+        {
           name: 'Lasagna',
           portion: '2',
           timetocook: '120 min',
           preparation:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
          
         },
-        { id:'2',
+        {
           name: 'Bolognese',
           portion: '4',
           timetocook: '30 min',
@@ -64,6 +40,10 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.fetchRecipeDetails();
+  },
+
   methods: {
     editRecipe(index) {
       console.log('Edit Recipe:', this.recipes[index]);
@@ -72,9 +52,12 @@ export default {
       console.log('Delete Recipe:', this.recipes[index]);
       this.recipes.splice(index, 1);
     },
-    goToRecipeDetails(recipeId) {
-      this.$router.push({ name: 'RecipeDetails', params: { id: recipeId } });
-    },
+    fetchRecipeDetails() {
+      const recipeId = this.$route.params.id;
+      axios.get(`/api/recipes/${recipeId}`).then(response => {
+        this.recipe = response.data;
+      });
+    }
   }
 };
 </script>
@@ -92,9 +75,5 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-}
-
-.table-hover tbody tr:hover {
-  cursor: pointer;
 }
 </style>

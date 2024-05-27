@@ -1,19 +1,42 @@
 <template>
-    <!-- Right Side with User Cards -->
-      <div class="grocery-card" v-for="(grocery, index) in groceries" :key="index">
-        <div class="card-body">
-          <h5 class="card-title">{{ grocery.name}}</h5>
-          <p class="card-text"><strong>price:</strong> {{ grocery.price }}</p>
-          <p class="card-text"><strong>type:</strong> {{ grocery.type }}</p>
-          <p class="card-text"><strong>Unit symbol:</strong> {{ grocery.unit_symbol }}</p>
-         
-          <div class="button-group">
-            <button class="btn btn-primary" @click="editUser(index)">Edit</button>
-            <button class="btn btn-danger" @click="deleteUser(index)">Delete</button>
-            
-          </div>
+    <div>
+    <h1>Grocery Table with Search</h1>
+    <!-- Search Inputs -->
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Search by name" v-model="searchId">
         </div>
-      </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Search by price " v-model="searchName">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Search by type" v-model="searchId">
+        </div>
+     </div>
+     </div>
+
+    <div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">price</th>
+            <th scope="col">type</th>
+            <th scope="col">symbol unit</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr v-for="grocery in groceries" :key="grocery.id">
+            <th scope="row">{{ grocery.id }}</th>
+            <td>{{ grocery.name }}</td>
+            <td>{{ grocery.price }}</td>
+            <td>{{ grocery.type }}</td>
+            <td>{{ grocery.unit_symbol }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 </template>
 
 <script>
@@ -24,13 +47,13 @@ export default {
     return {
       groceries: [
         // Sample user data, replace with your actual user data
-        {
+        { id:'1',
           name: 'Lemon',
           price: '2',
           type: 'fruit',
           unit_symbol:'kg'
         },
-        {
+        { id:'1',
           name: 'Beef',
           price: '4',
           type: 'meat',
