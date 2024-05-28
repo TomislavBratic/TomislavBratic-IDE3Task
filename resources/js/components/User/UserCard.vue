@@ -1,7 +1,6 @@
 <template>
     <div>
     <h1>User Table with Search</h1>
-    <!-- Search Inputs -->
     <div class="row mb-3">
         <div class="col">
             <input type="text" class="form-control" placeholder="Search by first name" v-model="searchId">

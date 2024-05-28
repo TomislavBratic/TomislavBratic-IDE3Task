@@ -27,7 +27,6 @@ class GroceryController extends Controller
 
         $groceries=$groceries->get();
 
-
         return Response::json($groceries, 200);
     }
 
@@ -36,7 +35,7 @@ class GroceryController extends Controller
         return Response::json($grocery, 200);
     }
     
-    public function DeleteOne($grocery_id){
+    public function delete($grocery_id){
         $grocery= Grocery::find($grocery_id);
         if($grocery){
            $grocery->delete();
@@ -45,43 +44,26 @@ class GroceryController extends Controller
         return Response::json('grocery not found!', 404);
     }
 
-    public function editOne($grocery_id)
-    {
-        $grocery = Grocery::find($grocery_id);
-
-        if (!$grocery) {
-            return  Response::json('grocery not found!', 404);
-        }
-
-        return view('groceries.edit', compact('grocery'));
-    }
-
-
-    public function updateOne(Request $request, $grocery_id)
+    public function update(Request $request, $grocery_id)
     {
         $validated = $request->validate([
+           
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:groceries,email,' . $grocery_id,
-            'identification_number' => 'required|string|max:255',
-            'date_of_birth' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:255',
-            'home_number' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
+            'price' => 'required|integer',
+            'type' => 'required|string|max:255',
+            'unit_symbol' => 'required|string|max:255',
         ]);
 
         $grocery = Grocery::find($grocery_id);
 
-        if (!$grocery) {
-            return  Response::json('grocery not found!', 404);
+        if ($grocery) {
+            $grocery->update($validated);
+            return  Response::json('grocery updated successfully!', 200);
         }
-
-        $grocery->update($validated);
-        return  Response::json('grocery updated successfully!', 200);
+        return  Response::json('grocery not found!', 404);
     }
 
-    public function CreateGrocery(Request $request){
+    public function create(Request $request){
         $data=$request->all();
         Grocery::create($data);
         return Response::json(200);

@@ -1,7 +1,6 @@
 <template>
     <div>
     <h1>Grocery Table with Search</h1>
-    <!-- Search Inputs -->
     <div class="row mb-3">
         <div class="col">
             <input type="text" class="form-control" placeholder="Search by name" v-model="searchId">
@@ -46,7 +45,6 @@ export default {
   data() {
     return {
       groceries: [
-        // Sample user data, replace with your actual user data
         { id:'1',
           name: 'Lemon',
           price: '2',

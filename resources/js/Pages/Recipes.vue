@@ -32,7 +32,7 @@ export default {
 <style>
 .grid-container {
  display: grid;
- grid-template-columns: 1fr 2fr; /* Adjust column widths as needed */
+ grid-template-columns: 1fr 2fr;
 }
 
 .sidebar {
@@ -42,6 +42,5 @@ export default {
 
 .user-cards {
  padding: 20px;
- /* You can add additional styling for user cards container */
 }
 </style>

@@ -14,7 +14,8 @@ class Recipe extends Model
         'description',
         'user_id',
         'preparation_text',
-        'cooking_time'
+        'cooking_time',
+        'rating'
     ];
 
     public function groceries()

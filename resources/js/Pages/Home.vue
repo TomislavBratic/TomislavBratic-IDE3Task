@@ -1,5 +1,4 @@
 <template>
-      <!-- Middle Content with Welcome Text -->
       <div class="welcome-text">
       <h1>Welcome to my application</h1>
       <p>Here you can add Users, Recipes, and Groceries</p>

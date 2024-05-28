@@ -7,15 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Recipe;
 use App\Models\Rating;
-use App\Models\Comment;
 use App\Models\Grocery;
 use App\Models\User;
+use App\Models\RecipeGrocery;
 
 class RecipeController extends Controller
 {
     public function GetAll(Request $request){
         $data=$request->all();
-        $recipes= Recipe::select('*');
+        $recipes= Recipe::select('recipes.*','users.id as user_id','users.firstname','users.lastname')->leftJoin('users','recipes.user_id','=','users.id');
         $users=User::select('*');
         $ratings=Rating::select('*');
         $groceries=Grocery::select('*');
@@ -28,40 +28,61 @@ class RecipeController extends Controller
 
         if(isset($data['filters']['firstname'])){
             if($data['filters']['firstname']!=''){
-                $recipes=$recipes->where('user_id','like', $users->select('user_id')->where('firstname','like', '%'.$data['firstname'].'%'));
+                $recipes=$recipes->where('users.firstname','like', '%'.$data['filters']['firstname'].'%');
             }
         }
 
         if(isset($data['filters']['lastname'])){
             if($data['filters']['lastname']!=''){
-                $recipes=$recipes->where('user_id','like', $users->select('user_id')->where('lastname','like', '%'.$data['lastname'].'%'));
+                $recipes=$recipes->where('users.lastname','like','%'. $data['filters']['lastname'].'%');
             }
         }
 
         if(isset($data['filters']['grocery_name'])){
             if($data['filters']['grocery_name']!=''){
-               // $recipes=$recipes->where('user_id','like', $groceries->select('user_id')->where('name','like', '%'.$data['grocery_name'].'%'));
+                $recipeswithgroceries = RecipeGrocery::select('recipe_groceries.recipe_id')->leftJoin('groceries','recipe_groceris.grocery_id','=','groceries.id')->where('groceries.name',$data['filters']['grocery_name'])->get()->toArray();
+                $recipes = $recipes->whereIn('id',$recipeswithgroceries);
             }
         }
 
-        if(isset($data['filters']['portion'])){
-            if($data['filters']['portion']!=''){
-                $recipes=$recipes->whereBetween('portion', ['minportion', 'maxportion']);
+        if(isset($data['filters']['portion_min'])){
+            if($data['filters']['portion_min']!=''){
+                $recipes=$recipes->where('portion', '>=',$data['filters']['portion_min']);
             }
         }
 
-        if(isset($data['filters']['timetocook'])){
-            if($data['filters']['timetocook']!=''){
-                $recipes=$recipes->whereBetween('timetocook', ['mintime', 'maxtime']);
+        
+        if(isset($data['filters']['portion_max'])){
+            if($data['filters']['portion_max']!=''){
+                $recipes=$recipes->where('portion', '>=',$data['filters']['portion_max']);
             }
         }
 
-        if(isset($data['filters']['rating'])){
-            if($data['filters']['rating']!=''){
-                $recipes=$recipes->where('recipe_id','like', $ratings->select('recipe_id')->whereBetween('rating',[$data['minrating'], $data['maxrating']]));
+        if(isset($data['filters']['timetocook_min'])){
+            if($data['filters']['timetocook_min']!=''){
+                $recipes=$recipes->where('timetocook', '>=',$data['filters']['timetocook_min']);
             }
         }
 
+        if(isset($data['filters']['timetocook_max'])){
+            if($data['filters']['timetocook_max']!=''){
+                $recipes=$recipes->where('timetocook', '<=',$data['filters']['timetocook_max']);
+            }
+        }
+
+        if(isset($data['filters']['rating_min'])){
+            if($data['filters']['rating_min']!=''){
+                $recipes=$recipes->where('rating', '>=',$data['filters']['rating_min']);
+            }
+        }
+        
+        if(isset($data['filters']['rating_max'])){
+            if($data['filters']['rating_max']!=''){
+                $recipes=$recipes->where('rating', '<=',$data['filters']['rating_max']);
+            }
+        }
+
+        //data sort value ce biti npr. rating, porcija a type je ascending i descending
         if(isset($data['sort']['value']) && isset($data['sort']['type']) ){
             if($data['sort']['value']!='' && $data['sort']['type']!=''){
                 $recipes=$recipes->orderBy($data['sort']['value'],$data['sort']['type'] );
@@ -74,12 +95,12 @@ class RecipeController extends Controller
         return Response::json($recipes, 200);
     }
 
-    public function GetOne($recipe_id){
+    public function getOne($recipe_id){
         $recipe= recipe::find($recipe_id);
         return Response::json($recipe, 200);
     }
     
-    public function DeleteOne($recipe_id){
+    public function delete($recipe_id){
         $recipe= recipe::find($recipe_id);
         if($recipe){
            $recipe->delete();
@@ -88,19 +109,7 @@ class RecipeController extends Controller
         return Response::json('recipe not found!', 404);
     }
 
-    public function editOne($recipe_id)
-    {
-        $recipe = Recipe::find($recipe_id);
-
-        if (!$recipe) {
-            return  Response::json('Recipe not found!', 404);
-        }
-
-        return view('recipe.edit', compact('recipe'));
-    }
-
-
-    public function updateOne(Request $request, $recipe_id)
+    public function update(Request $request, $recipe_id)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -111,17 +120,21 @@ class RecipeController extends Controller
 
         $recipe = Recipe::find($recipe_id);
 
-        if (!$recipe) {
-            return  Response::json('Recipe not found!', 404);
+        if ($recipe) {
+            $recipe->update($validated);
+            return  Response::json('Recipe updated successfully!', 200);
         }
-
-        $recipe->update($validated);
-        return  Response::json('Recipe updated successfully!', 200);
+        return  Response::json('Recipe not found!', 404);
     }
 
-    public function CreateRecipe(Request $request){
-        $data=$request->all();
-        Recipe::create($data);
+    public function create(Request $request){
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'preparation' => 'required|string|max:255',
+            'portion' => 'required|string|max:255',
+            'cooking_time' => 'required|string|max:255',
+        ]);
+        Recipe::create($validated);
         return Response::json(200);
           
     }

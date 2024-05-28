@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RatingController extends Controller
 {
-     public function CreateRating(Request $request){
+     public function create(Request $request){
         $data=$request->all();
         $recipe= Recipe::where('id', $data['recipe_id'])->first();
         if($recipe->user_id!=Auth::user()->id){
@@ -19,6 +19,12 @@ class RatingController extends Controller
             if(!$existing_rating)
             {
                 Rating::create($data);
+                $allRatings= Rating::where('recipe_id',$data['recipe_id'])->get();
+                $total=0;
+                foreach($allRatings as $Rating){
+                    $total+=$Rating->rating;
+                }
+                $recipe->update(['rating'=>$total/count($allRatings)]);
                 return Response::json(200);
             }
             return Response::json("Rating already exists!",400);

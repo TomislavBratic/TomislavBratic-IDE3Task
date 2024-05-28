@@ -1,5 +1,4 @@
 <template>
-    <!-- Right Side with User Cards -->
       <div class="recipe-card" v-for="(recipe, index) in recipes" :key="index">
         <div class="card-body">
           <h5 class="card-title">{{ recipe.name}}</h5>
@@ -23,7 +22,6 @@ export default {
   data() {
     return {
       recipes: [
-        // Sample user data, replace with your actual user data
         {
           name: 'Lasagna',
           portion: '2',

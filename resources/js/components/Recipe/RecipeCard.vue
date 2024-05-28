@@ -1,7 +1,6 @@
 <template>
    <div>
     <h1>Recipe Table with Search</h1>
-    <!-- Search Inputs -->
     <div class="row mb-3">
         <div class="col">
             <input type="text" class="form-control" placeholder="Search by name" v-model="searchId">
@@ -47,7 +46,6 @@ export default {
   data() {
     return {
       recipes: [
-        // Sample recipe data, replace with your actual recipe data
         { id:'1',
           name: 'Lasagna',
           portion: '2',

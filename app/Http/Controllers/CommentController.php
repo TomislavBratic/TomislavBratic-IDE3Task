@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
 
 class CommentController extends Controller
 {
-    public function CreateComment(Request $request){
+    public function create(Request $request){
         $data=$request->all();
         Comment::create($data);
         return Response::json(200);

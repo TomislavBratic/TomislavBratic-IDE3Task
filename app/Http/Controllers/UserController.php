@@ -43,7 +43,7 @@ class UserController extends Controller
         return Response::json($user, 200);
     }
     
-    public function DeleteOne($user_id){
+    public function delete($user_id){
         $user= User::find($user_id);
         if($user){
            $user->delete();
@@ -52,19 +52,7 @@ class UserController extends Controller
         return Response::json('User not found!', 404);
     }
 
-    public function editOne($user_id)
-    {
-        $user = User::find($user_id);
-
-        if (!$user) {
-            return  Response::json('User not found!', 404);
-        }
-
-        return view('users.edit', compact('user'));
-    }
-
-
-    public function updateOne(Request $request, $user_id)
+    public function update(Request $request, $user_id)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -81,14 +69,13 @@ class UserController extends Controller
         $user = User::find($user_id);
 
         if (!$user) {
-            return  Response::json('User not found!', 404);
+            $user->update($validated);
+            return  Response::json('User updated successfully!', 200);
         }
-
-        $user->update($validated);
-        return  Response::json('User updated successfully!', 200);
+        return  Response::json('User not found!', 404);
     }
-    
-    public function CreateUser(Request $request){
+
+    public function create(Request $request){
         $data=$request->all();
         User::create($data);
         return Response::json(200);

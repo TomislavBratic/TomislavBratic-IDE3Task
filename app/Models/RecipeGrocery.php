@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class RecipeGrocery extends Model
+{
+    use HasFactory;
+
+    
+    public function recipe()
+    {
+        return $this->belongsTo(Recipe::class);
+    }
+
+    public function grocery()
+    {
+        return $this->belongsTo(Grocery::class);
+    }
+}
